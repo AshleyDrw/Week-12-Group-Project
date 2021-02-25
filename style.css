@@ -1,0 +1,11 @@
+body {
+    background: url(bakery/cake.jpg) no-repeat center center fixed; 
+    background-size: cover;
+    background-position: center;
+}
+
+#new-order {
+    background-color: rgba(229, 235, 230, 0.5);
+    box-shadow: 0px 0px 10px 3px grey;
+    color:black;
+}
