@@ -1,3 +1,4 @@
+// Utilities
 
 let utils = (function() {
     let ids = 0;
@@ -8,6 +9,7 @@ let utils = (function() {
     return { getNewId };
 })();
 
+// Cake Model
 
 class Cake {
     constructor(id, flavor, frosting, layers, shapes) {
@@ -19,6 +21,8 @@ class Cake {
     }
 }
 
+// New Order Model
+
 class Order {
     constructor(id, name, baker, deliveryDate) {
         this.id = id;
@@ -28,12 +32,12 @@ class Order {
         this.cakes = [];
     }
 
-    
+    // Add new cake function
     addCake(flavor, frosting, layers, shapes) {
         this.cakes.push(new Cake(utils.getNewId(), flavor, frosting, layers, shapes));
     }
 
-    
+    // Remove cake function 
     removeCake(id) {
         let cakeToDeleteIdx = this.cakes.map(cake => cake.id).indexOf(id);
         if (cakeToDeleteIdx != -1) {
@@ -42,12 +46,15 @@ class Order {
     }
 }
 
+// Data repository
 
 let orderRepo = [];
 
+// Service
 
 class OrderService {
-   
+    
+    // Returns the index in the repo where an order with given id was found; -1 if not found
     static getIdxForId(orderId) {
         
         return orderRepo.map(a => a.id).indexOf(orderId);
@@ -81,6 +88,7 @@ class OrderService {
     }
 }
 
+//Frontend state
 
 let currentState;   
 
@@ -90,13 +98,14 @@ function updateState(newState) {
     DOMManager.render();
 }
 
+//DOM Manager
 
 class DOMManager {
     static getOrderHeader(orderDesc) {
         return `<div>
-                    <div class="row">
+                    <div id="cake-form" class="row">
                         <div class="col-8">
-                            <h3>${orderDesc.name} <br> Baker: ${orderDesc.baker}  <br> Delivery Date: ${orderDesc.deliveryDate}</h3>
+                            <h3>Order Name: ${orderDesc.name} <br> Baked by: ${orderDesc.baker}  <br> Delivery Date: ${orderDesc.deliveryDate}</h3>
                         </div>
                         <div class="col-4">
                             <button class="delete-order btn btn-danger" 
@@ -128,24 +137,24 @@ class DOMManager {
     }
 
     static getNewCakeForm(orderDesc) {
-        return `<div class="form-group">
+        return `<div class="form-group" id="new-cake-form">
                  <label for="new-cake-flavor-${orderDesc.id}">Flavor:</label><br>
-                 <input class="form-control" type="text" id="new-cake-flavor-${orderDesc.id}">
+                 <input class="form-control" type="text" id="new-cake-flavor-${orderDesc.id}" placeholder="Enter the flavor for your cake">
                 </div>
                 <div class="form-group">
                  <label for="new-cake-frosting-${orderDesc.id}">Frosting:</label><br>
-                 <input class="form-control" type="text" id="new-cake-frosting-${orderDesc.id}">
+                 <input class="form-control" type="text" id="new-cake-frosting-${orderDesc.id}" placeholder="Enter the color for your cake">
                 </div>
                 <div class="form-group">
-                 <label for="new-cake-layers-${orderDesc.id}">Layers:</label><br>
-                 <input class="form-control" type="text" id="new-cake-layers-${orderDesc.id}">
+                 <label for="new-cake-layers-${orderDesc.id}">No. of Layers:</label><br>
+                 <input class="form-control" type="text" id="new-cake-layers-${orderDesc.id}" placeholder="Enter the no. of layers for your cake (max = 3)">
                 </div>
                 <div class="form-group">
-                 <label for="new-cake-shapes-${orderDesc.id}">Cake Shape:</label><br>
-                 <input class="form-control" type="text" id="new-cake-shapes-${orderDesc.id}">
+                 <label for="new-cake-shapes-${orderDesc.id}">Shape of Cake:</label><br>
+                 <input class="form-control" type="text" id="new-cake-shapes-${orderDesc.id}" placeholder="Enter the shape for you cake (NEW SHAPE: Bundt)">
                 </div>
-                <div class="form-group">
-                    <button class="form-control btn btn-primary" id="add-cake-for-order-${orderDesc.id}" data-order-id="${orderDesc.id}">Add New Cake</button>
+                <div id="add-cake" class="form-group">
+                    <button class="form-control btn btn" id="add-cake-for-order-${orderDesc.id}" data-order-id="${orderDesc.id}">Add New Cake</button>
                 </div>`;
     }
 
@@ -165,15 +174,15 @@ class DOMManager {
     }
 
     static render() {
-        
+        // render application based on current state
         let newMarkup = currentState.map(this.getOrderBox);
         $('#app').html(newMarkup);
     }
 
     static init() {
-        
+        // application initialization, event delegation hookups
         let $nameInput = $('#new-order-name');
-        let $bakerInput = $('#new-order-baker');
+        let $bakerInput = $('#baker-name');
         let $deliveryDateInput = $('#new-order-deliveryDate');
     
         $('#create-new-order').on('click', () => {
@@ -182,7 +191,7 @@ class DOMManager {
         });
     
         $('#app').on('click', (e) =>{
-            
+            // employing event delegation
             let $target = $(e.target);
             let targetId= $target.attr('id');
     
@@ -224,5 +233,6 @@ class DOMManager {
     }
 }
 
+// Application initialization
 
 DOMManager.init();
