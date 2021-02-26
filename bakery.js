@@ -10,11 +10,12 @@ let utils = (function() {
 
 
 class Cake {
-    constructor(id, flavor, frosting, layers) {
+    constructor(id, flavor, frosting, layers, shapes) {
         this.id = id;
-        this.title = flavor;
-        this.genre = frosting;
-        this.pubYear = layers;
+        this.flavor = flavor;
+        this.frosting = frosting;
+        this.layers = layers;
+        this.shapes = shapes;
     }
 }
 
@@ -28,8 +29,8 @@ class Order {
     }
 
     
-    addCake(flavor, frosting, layers) {
-        this.cakes.push(new Cake(utils.getNewId(), flavor, frosting, layers));
+    addCake(flavor, frosting, layers, shapes) {
+        this.cakes.push(new Cake(utils.getNewId(), flavor, frosting, layers, shapes));
     }
 
     
@@ -95,7 +96,7 @@ class DOMManager {
         return `<div>
                     <div class="row">
                         <div class="col-8">
-                            <h3>${orderDesc.name} / Baker: ${orderDesc.baker} / Delivery Date: ${orderDesc.deliveryDate}</h3>
+                            <h3>${orderDesc.name} <br> Baker: ${orderDesc.baker}  <br> Delivery Date: ${orderDesc.deliveryDate}</h3>
                         </div>
                         <div class="col-4">
                             <button class="delete-order btn btn-danger" 
@@ -113,7 +114,8 @@ class DOMManager {
                     <ul>
                         <li>Flavor: ${cakeDesc.flavor}</li>
                         <li>Frosting: ${cakeDesc.frosting}</li>
-                        <li>Layers: ${cakeDesc.layers}</li>
+                        <li>Amount of Layers: ${cakeDesc.layers}</li>
+                        <li>Cake Shape: ${cakeDesc.shapes}</li>
                     </ul>
                 </div>
                 <div class="col-4">
@@ -132,11 +134,15 @@ class DOMManager {
                 </div>
                 <div class="form-group">
                  <label for="new-cake-frosting-${orderDesc.id}">Frosting:</label><br>
-                 <input class="form-control" type="text" id="new-cake-flavor-${orderDesc.id}">
+                 <input class="form-control" type="text" id="new-cake-frosting-${orderDesc.id}">
                 </div>
                 <div class="form-group">
                  <label for="new-cake-layers-${orderDesc.id}">Layers:</label><br>
                  <input class="form-control" type="text" id="new-cake-layers-${orderDesc.id}">
+                </div>
+                <div class="form-group">
+                 <label for="new-cake-shapes-${orderDesc.id}">Cake Shape:</label><br>
+                 <input class="form-control" type="text" id="new-cake-shapes-${orderDesc.id}">
                 </div>
                 <div class="form-group">
                     <button class="form-control btn btn-primary" id="add-cake-for-order-${orderDesc.id}" data-order-id="${orderDesc.id}">Add New Cake</button>
@@ -197,12 +203,13 @@ class DOMManager {
                 let flavor = $(`#new-cake-flavor-${orderId}`).val();
                 let frosting = $(`#new-cake-frosting-${orderId}`).val();
                 let layers = $(`#new-cake-layers-${orderId}`).val();
+                let shapes = $(`#new-cake-shapes-${orderId}`).val();
     
                 
                 let orderToUpdate;
                 currentState.forEach(order => {
                     if (order.id === orderId) {
-                        order.addCake(flavor, frosting, layers);
+                        order.addCake(flavor, frosting, layers, shapes);
                         orderToUpdate = order;
                     }
                 });
