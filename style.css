@@ -57,18 +57,14 @@ h3 {
     text-align: center;
 }
 
+#create-new-order, 
+#add-cake,
 #submit {
-    background: #F6BD60;
-}
-
-#create-new-order, #add-cake {
     background: #84A59D;
 }
 
-#cake-delete,
-#delete-cake- {
-    background: #F28482;
-    color: white;
+#bar {
+    background: #F9DEDC;
 }
 
 #nav-bar {
